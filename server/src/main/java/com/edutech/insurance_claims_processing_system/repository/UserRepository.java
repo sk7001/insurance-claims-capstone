@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import com.edutech.insurance_claims_processing_system.entity.User;
 
 @Repository
-public interface UserRepository  {
+public interface UserRepository extends JpaRepository<User, Long>  {
+    User findByUsername(String username);
     
 }

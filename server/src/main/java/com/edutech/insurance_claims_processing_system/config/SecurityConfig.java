@@ -21,5 +21,5 @@ import com.edutech.insurance_claims_processing_system.jwt.JwtRequestFilter;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
-    //implement required code here
+ 
     }
