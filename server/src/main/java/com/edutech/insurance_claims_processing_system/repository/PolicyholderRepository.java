@@ -1,0 +1,18 @@
+package com.edutech.insurance_claims_processing_system.repository;
+
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.edutech.insurance_claims_processing_system.entity.Claim;
+import com.edutech.insurance_claims_processing_system.entity.Policyholder;
+
+@Repository
+public interface PolicyholderRepository extends JpaRepository <Policyholder,Long>{
+
+    public Optional   findById(Long policyholderId);
+   
+}
