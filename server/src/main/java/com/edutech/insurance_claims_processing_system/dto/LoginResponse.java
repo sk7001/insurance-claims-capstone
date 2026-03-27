@@ -5,5 +5,36 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class LoginResponse {
 
-   //implement required code here
+    private Long userId;
+    private String token;
+    private String username;
+    private String email;
+    private String role;
+
+    @JsonCreator
+    public LoginResponse(
+            @JsonProperty("userId") Long userId,
+            @JsonProperty("token") String token,
+            @JsonProperty("username") String username,
+            @JsonProperty("email") String email,
+            @JsonProperty("role") String role) {
+
+        this.userId = userId;
+        this.token = token;
+        this.username = username;
+        this.email = email;
+        this.role = role;
+    }
+
+    public Long getUserId() { return userId; }
+    public String getToken() { return token; }
+    public String getUsername() { return username; }
+    public String getEmail() { return email; }
+    public String getRole() { return role; }
+
+    public void setUserId(Long userId) { this.userId = userId; }
+    public void setToken(String token) { this.token = token; }
+    public void setUsername(String username) { this.username = username; }
+    public void setEmail(String email) { this.email = email; }
+    public void setRole(String role) { this.role = role; }
 }
