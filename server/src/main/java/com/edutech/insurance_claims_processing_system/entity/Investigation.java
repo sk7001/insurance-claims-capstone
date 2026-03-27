@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
@@ -14,52 +15,34 @@ public class Investigation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String reportDetails;
-    private String result;
-
-    @ManyToOne
-    private Investigator investigator;
+    private String report;
+    private String status;
 
     @OneToOne
+    @JoinColumn(name = "claim_id")
     private Claim claim;
 
-    public Long getId() {
-        return id;
-    }
+    @ManyToOne
+    @JoinColumn(name = "investigator_id")
+    private Investigator investigator;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public Investigation() {}
 
-    public String getReportDetails() {
-        return reportDetails;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setReportDetails(String reportDetails) {
-        this.reportDetails = reportDetails;
-    }
+    public String getReport() { return report; }
+    public void setReport(String report) { this.report = report; }
 
-    public String getResult() {
-        return result;
-    }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 
-    public void setResult(String result) {
-        this.result = result;
-    }
+    public Claim getClaim() { return claim; }
+    public void setClaim(Claim claim) { this.claim = claim; }
 
-    public Investigator getInvestigator() {
-        return investigator;
-    }
-
+    public Investigator getInvestigator() { return investigator; }
     public void setInvestigator(Investigator investigator) {
         this.investigator = investigator;
     }
 
-    public Claim getClaim() {
-        return claim;
-    }
-
-    public void setClaim(Claim claim) {
-        this.claim = claim;
-    }
 }
