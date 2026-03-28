@@ -8,5 +8,9 @@ import com.edutech.insurance_claims_processing_system.entity.User;
 
 @Repository
 public interface UserRepository  {
+
+    Object findByUsername(String username);
+
+    User save(User user);
     
 }
