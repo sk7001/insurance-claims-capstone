@@ -9,7 +9,42 @@ import { HttpService } from '../../services/http.service';
   templateUrl: './update-claim.component.html',
   styleUrls: ['./update-claim.component.scss']
 })
+
 export class UpdateClaimComponent {
 
-   
+  itemForm: FormGroup;
+  formModel: any = { description: '', date: '', status: null };
+
+  updatedId: any;
+  claimList: any[] = [];
+
+  constructor(
+    public router: Router,
+    public httpService: HttpService,
+    private formBuilder: FormBuilder,
+    private authService: AuthService
+  ) {
+    this.itemForm = this.formBuilder.group({
+      description: ['', Validators.required],
+      date: ['', Validators.required],
+      status: ['', Validators.required]
+    });
+  }
+
+  getClaims() {
+    this.httpService.getAllClaims().subscribe();
+  }
+
+  edit(val: any) {
+    this.updatedId = val.id;
+    this.itemForm.patchValue(val);
+  }
+
+  onSubmit() {
+    if (this.itemForm.invalid) return;
+    this.httpService.updateClaims(this.itemForm.value, this.updatedId).subscribe();
+  }
 }
+
+   
+

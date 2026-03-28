@@ -13,8 +13,8 @@ export class AppComponent {
   constructor(private authService: AuthService, private router:Router)
   {
    
-    this.IsLoggin=authService.getLoginStatus;
-    this.roleName=authService.getRole;
+    this.IsLoggin=authService.isUserLoggedIn();
+    this.roleName=authService.getRole();
     if(this.IsLoggin==false)
     {
       this.router.navigateByUrl('/login'); 

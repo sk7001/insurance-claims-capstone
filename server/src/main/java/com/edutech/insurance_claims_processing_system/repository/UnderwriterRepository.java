@@ -11,6 +11,6 @@ import com.edutech.insurance_claims_processing_system.entity.Underwriter;
 @Repository
 public interface UnderwriterRepository {
 
-   public List<Claim>  findById(Long underwriterId);
+ 
     
 }

@@ -5,5 +5,5 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class LoginResponse {
 
-   //implement required code here
+  
 }

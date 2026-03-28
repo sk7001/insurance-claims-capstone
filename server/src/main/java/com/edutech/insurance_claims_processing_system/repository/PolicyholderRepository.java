@@ -13,6 +13,6 @@ import com.edutech.insurance_claims_processing_system.entity.Policyholder;
 @Repository
 public interface PolicyholderRepository extends JpaRepository <Policyholder,Long>{
 
-    public Optional   findById(Long policyholderId);
+  
    
 }

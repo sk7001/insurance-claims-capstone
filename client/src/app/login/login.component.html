@@ -1,1 +1,46 @@
-<!--Enter your code here-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <link rel="stylesheet" href="/home/coder/app/client/src/app/login/login.component.scss">
+</head>
+<body>
+
+<div class="auth-wrapper">
+
+  <div class="auth-card fade-in">
+    <h1>Welcome Back</h1>
+    <p class="sub">Sign in to your account</p>
+
+    <form [formGroup]="itemForm" (ngSubmit)="onLogin()" >
+      <div class="input-group">
+        <input type="text" formControlName="username">
+        <label>Username</label>
+      </div>
+   <div
+        *ngIf="itemForm.get('username')?.invalid &&(itemForm.get('username')?.touched || itemForm.get('username')?.dirty)">
+        <p *ngIf="itemForm.get('username')?.errors?.['required']">Username must be required</p>
+    </div>
+      <div class="input-group">
+        <input type="password" formControlName="password">
+        <div
+        *ngIf="itemForm.get('password')?.invalid &&(itemForm.get('password')?.touched || itemForm.get('password')?.dirty)">
+        <p *ngIf="itemForm.get('password')?.errors?.['required']">Password must be required</p>
+    </div>
+        <label>Password</label>
+      </div>
+
+      <button>Sign In</button>
+    </form>
+
+    <p class="switch">
+      New here?
+      <a href="register.html">Create account →</a>
+    </p>
+  </div>
+
+</div>
+
+</body>
+</html>
