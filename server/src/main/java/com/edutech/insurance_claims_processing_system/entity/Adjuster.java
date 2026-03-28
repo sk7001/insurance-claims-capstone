@@ -4,5 +4,5 @@ import javax.persistence.Entity;
 
 @Entity
 public class Adjuster extends User {
-    // Additional fields specific to adjusters
+    public Adjuster() {}
 }

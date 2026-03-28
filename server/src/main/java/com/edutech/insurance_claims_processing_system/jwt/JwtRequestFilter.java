@@ -1,61 +1,68 @@
 package com.edutech.insurance_claims_processing_system.jwt;
 
-import java.io.IOException;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletResponse;
-
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Collection;
+
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
+    private final UserDetailsService userDetailsService;
+    private final JwtUtil jwtUtil;
 
-    // ✅ Loads user details
     @Autowired
-    private UserDetailsService userDetailsService;
-
-    // ✅ JWT utility
-    @Autowired
-    private JwtUtil jwtUtil;
+    public JwtRequestFilter(UserDetailsService userDetailsService, JwtUtil jwtUtil) {
+        this.userDetailsService = userDetailsService;
+        this.jwtUtil = jwtUtil;
+    }
 
     @Override
-    protected void doFilterInternal(javax.servlet.http.HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain chain)
-            throws ServletException, IOException {
-
-        String authorizationHeader = request.getHeader("Authorization");
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
+        final String authorizationHeader = request.getHeader("Authorization");
 
         String username = null;
-        String jwtToken = null;
+        String jwt = null;
 
-        // ✅ Extract token
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            jwtToken = authorizationHeader.substring(7);
-            username = jwtUtil.extractUsername(jwtToken);
-        }
-
-        // ✅ Authenticate user if not already authenticated
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
-            if (jwtUtil.validateToken(jwtToken, userDetails)) {
-
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
-
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            jwt = authorizationHeader.substring(7);
+            try {
+                username = jwtUtil.extractUsername(jwt);
+            } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException |
+                     SignatureException | IllegalArgumentException e) {
+                // Handle invalid tokens
             }
         }
 
-        chain.doFilter(request, response);
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+            if (jwtUtil.validateToken(jwt, userDetails)) {
+                Collection<? extends GrantedAuthority> authorities =
+                        AuthorityUtils.createAuthorityList(jwtUtil.getRoleFromToken(jwt));
+
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, authorities);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+        }
+
+        filterChain.doFilter(request, response);
     }
 }

@@ -1,7 +1,7 @@
 package com.edutech.insurance_claims_processing_system.jwt;
 
-import java.util.Date;
-
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -9,45 +9,74 @@ import org.springframework.stereotype.Component;
 import com.edutech.insurance_claims_processing_system.entity.User;
 import com.edutech.insurance_claims_processing_system.repository.UserRepository;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class JwtUtil {
 
-    @Autowired
     private UserRepository userRepository;
 
-    private final String secret = "insurance_secret_key";
+    @Autowired
+    public JwtUtil(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    private final String secret = "secretKey000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
 
     private final int expiration = 86400;
 
     public String generateToken(String username) {
-        User user = userRepository.findByUsername(username);
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + expiration * 1000);
+        User user = userRepository.findByUsername(username).orElseThrow();
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("sub", username);
+        claims.put("role", "ROLE_" + user.getRole().toUpperCase());
 
         return Jwts.builder()
-                .setSubject(username)
-                .claim("role", user.getRole())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
-                .signWith(SignatureAlgorithm.HS256, secret)
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(expiryDate)
+                .signWith(io.jsonwebtoken.SignatureAlgorithm.HS512, secret)
                 .compact();
     }
 
     public Claims extractAllClaims(String token) {
-        return Jwts.parser()
-                .setSigningKey(secret)
-                .parseClaimsJws(token)
-                .getBody();
+        Claims claims;
+        try {
+            claims = Jwts.parser()
+                    .setSigningKey(secret)
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (Exception e) {
+            claims = null;
+        }
+        return claims;
     }
 
     public String extractUsername(String token) {
-        return extractAllClaims(token).getSubject();
+        Claims claims = Jwts.parser()
+                .setSigningKey(secret)
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.getSubject();
+    }
+
+    public String getRoleFromToken(String token) {
+        Claims claims = extractAllClaims(token);
+        return claims != null ? (String) claims.get("role") : null;
     }
 
     public boolean isTokenExpired(String token) {
-        return extractAllClaims(token).getExpiration().before(new Date());
+        Date expirationDate = Jwts.parser()
+                .setSigningKey(secret)
+                .parseClaimsJws(token)
+                .getBody()
+                .getExpiration();
+        return expirationDate.before(new Date());
     }
 
     public boolean validateToken(String token, UserDetails userDetails) {

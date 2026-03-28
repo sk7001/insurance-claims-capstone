@@ -1,7 +1,5 @@
 package com.edutech.insurance_claims_processing_system.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,84 +10,80 @@ import com.edutech.insurance_claims_processing_system.repository.ClaimRepository
 import com.edutech.insurance_claims_processing_system.repository.PolicyholderRepository;
 import com.edutech.insurance_claims_processing_system.repository.UnderwriterRepository;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class ClaimService {
 
     @Autowired
     private ClaimRepository claimRepository;
-
     @Autowired
     private PolicyholderRepository policyholderRepository;
-
     @Autowired
     private UnderwriterRepository underwriterRepository;
 
-    // ✅ Create claim (generic)
     public Claim createClaim(Claim claim) {
+        if (claim.getDate() == null)
+            claim.setDate(new Date());
+        if (claim.getStatus() == null)
+            claim.setStatus("PENDING");
         return claimRepository.save(claim);
     }
 
-    // ✅ Submit claim by policyholder
-    public Claim submitClaim(Long pid, Claim claim) {
-        claim.setPolicyholder(
-                policyholderRepository.findById(pid).orElse(null)
-        );
-        return claimRepository.save(claim);
-    }
-
-    // ✅ Get claims by policyholder
-    public List<Claim> getClaimsByPolicyholder(Long pid) {
-        Policyholder policyholder =
-                policyholderRepository.findById(pid).orElse(null);
-        return claimRepository.findByPolicyholder(policyholder);
-    }
-
-    // ✅ ✅ MISSING METHOD #1 — FIX
     public Claim updateClaim(Long id, Claim claimDetails) {
-        Claim claim = claimRepository.findById(id).orElse(null);
-
-        if (claim != null) {
-            claim.setDescription(claimDetails.getDescription());
-            claim.setDate(claimDetails.getDate());
-            claim.setStatus(claimDetails.getStatus());
+        Optional<Claim> optionalClaim = claimRepository.findById(id);
+        if (optionalClaim.isPresent()) {
+            Claim claim = optionalClaim.get();
+            if (claimDetails.getDescription() != null)
+                claim.setDescription(claimDetails.getDescription());
+            if (claimDetails.getStatus() != null)
+                claim.setStatus(claimDetails.getStatus());
             return claimRepository.save(claim);
         }
-        return null;
+        throw new RuntimeException("Claim not found: " + id);
     }
 
-    // ✅ ✅ MISSING METHOD #2 — FIX
     public List<Claim> getAllClaims() {
         return claimRepository.findAll();
     }
 
-    // ✅ Assign claim to underwriter
-    public Claim assignClaimToUnderwriter(Long cid, Long uid) {
-        Claim claim = claimRepository.findById(cid).orElse(null);
-        Underwriter underwriter =
-                underwriterRepository.findById(uid).orElse(null);
-
-        if (claim != null && underwriter != null) {
-            claim.setUnderwriter(underwriter);
-            return claimRepository.save(claim);
-        }
-        return null;
+    public Claim submitClaim(Long policyholderId, Claim claim) {
+        Policyholder policyholder = policyholderRepository.findById(policyholderId)
+                .orElseThrow(() -> new RuntimeException("Policyholder not found: " + policyholderId));
+        claim.setPolicyholder(policyholder);
+        return createClaim(claim);
     }
 
-    // ✅ Review claim (underwriter)
+    public List<Claim> getClaimsByPolicyholder(Long policyholderId) {
+        Policyholder policyholder = policyholderRepository.findById(policyholderId)
+                .orElseThrow(() -> new RuntimeException("Policyholder not found"));
+        return claimRepository.findByPolicyholder(policyholder);
+    }
+
     public Claim reviewClaim(Long id, String status) {
-        Claim claim = claimRepository.findById(id).orElse(null);
-
-        if (claim != null) {
-            claim.setStatus(status);
-            return claimRepository.save(claim);
-        }
-        return null;
+        Claim claim = claimRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Claim not found: " + id));
+        claim.setStatus(status);
+        return claimRepository.save(claim);
     }
 
-    // ✅ Get claims for review
-    public List<Claim> getClaimsForReview(Long uid) {
-        Underwriter underwriter =
-                underwriterRepository.findById(uid).orElse(null);
+    public List<Claim> getClaimsForReview(Long underwriterId) {
+        Underwriter underwriter = underwriterRepository.findById(underwriterId)
+                .orElseThrow(() -> new RuntimeException("Underwriter not found"));
         return claimRepository.findByUnderwriter(underwriter);
+    }
+
+    public Claim assignClaimToUnderwriter(Long claimId, Long underwriterId) {
+        Claim claim = claimRepository.findById(claimId)
+                .orElseThrow(() -> new RuntimeException("Claim not found"));
+        Underwriter underwriter = underwriterRepository.findById(underwriterId)
+                .orElseThrow(() -> new RuntimeException("Underwriter not found"));
+        claim.setUnderwriter(underwriter);
+        if (claim.getDescription() == null || claim.getDescription().trim().isEmpty()) {
+            claim.setDescription("Claim assigned to underwriter");
+        }
+        return claimRepository.save(claim);
     }
 }
