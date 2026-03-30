@@ -1,537 +1,125 @@
-// SCSS Variables
-$primary-blue: #1E40AF;
-$primary-light: #3B82F6;
-$primary-dark: #1E3A8A;
-$accent-blue: #60A5FA;
+$accent: #0071e3;
 
-$neutral-50: #F9FAFB;
-$neutral-100: #F3F4F6;
-$neutral-200: #E5E7EB;
-$neutral-300: #D1D5DB;
-$neutral-400: #9CA3AF;
-$neutral-500: #6B7280;
-$neutral-600: #4B5563;
-$neutral-700: #374151;
-$neutral-800: #1F2937;
-$neutral-900: #111827;
+/* 🎬 BACKGROUND ANIMATION */
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
-$white: #FFFFFF;
-$error-red: #EF4444;
-$success-green: #10B981;
-
-$border-radius-sm: 6px;
-$border-radius-md: 10px;
-$border-radius-lg: 16px;
-$border-radius-xl: 20px;
-
-$spacing-xs: 8px;
-$spacing-sm: 12px;
-$spacing-md: 16px;
-$spacing-lg: 24px;
-$spacing-xl: 32px;
-$spacing-2xl: 48px;
-
-$transition-fast: 0.15s ease;
-$transition-normal: 0.3s ease;
-$transition-slow: 0.5s ease;
-
-$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-$shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-$shadow-focus: 0 0 0 3px rgba(59, 130, 246, 0.15);
-$shadow-glow: 0 0 20px rgba(59, 130, 246, 0.3);
-
-$font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
-
-// Mixins
-@mixin flex-center {
+/* 📦 WRAPPER */
+.auth-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(120deg, #e8f0ff, #ffffff, #f0f7ff);
+  background-size: 300% 300%;
+  animation: gradientMove 10s ease infinite;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-@mixin gradient-primary {
-  background: linear-gradient(135deg, $primary-blue 0%, $primary-light 100%);
-}
-
-@mixin gradient-shimmer {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.3) 50%,
-    transparent 100%
-  );
-}
-
-@mixin smooth-transition($properties...) {
-  transition-property: $properties;
-  transition-duration: $transition-normal;
-  transition-timing-function: ease;
-}
-
-// Reset and Base Styles
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  font-size: 16px;
-}
-
-body {
-  font-family: $font-family;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: $neutral-800;
-  line-height: 1.6;
-  background: linear-gradient(135deg, #F0F4F8 0%, #E5E9F0 100%);
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-// Main Container
-.register-container {
-  min-height: 100vh;
-  @include flex-center;
-  padding: $spacing-lg;
-  position: relative;
-  z-index: 1;
-
-  @media (max-width: 768px) {
-    padding: $spacing-md;
-  }
-}
-
-// Background Decorations
-.background-decoration {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  overflow: hidden;
-  z-index: 0;
-
-  .decoration-circle {
-    position: absolute;
-    border-radius: 50%;
-    opacity: 0.08;
-    @include gradient-primary;
-
-    &-1 {
-      width: 600px;
-      height: 600px;
-      top: -200px;
-      right: -150px;
-      filter: blur(80px);
-    }
-
-    &-2 {
-      width: 500px;
-      height: 500px;
-      bottom: -150px;
-      left: -100px;
-      filter: blur(80px);
-    }
-  }
-
-  .decoration-grid {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image:
-      linear-gradient(rgba(30, 64, 175, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(30, 64, 175, 0.03) 1px, transparent 1px);
-    background-size: 50px 50px;
-  }
-}
-
-// Registration Card
-.register-card {
-  background: $white;
-  border-radius: $border-radius-xl;
-  box-shadow: $shadow-xl;
-  padding: $spacing-2xl;
-  width: 100%;
-  max-width: 520px;
-  position: relative;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-
-  @media (max-width: 768px) {
-    padding: $spacing-xl;
-    max-width: 100%;
-  }
-
-  @media (max-width: 480px) {
-    padding: $spacing-lg;
-  }
-}
-
-// Header Section
-.register-header {
+/* 🧊 CARD */
+.auth-card {
+  width: 380px;
+  padding: 35px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.1);
   text-align: center;
-  margin-bottom: $spacing-xl;
+  animation: fadeUp 0.8s ease;
 
-  .brand {
-    @include flex-center;
-    flex-direction: column;
-    gap: $spacing-sm;
-    margin-bottom: $spacing-lg;
-
-    &-icon {
-      display: inline-flex;
-      @include smooth-transition(transform);
-
-      svg {
-        display: block;
-      }
-
-      &:hover {
-        transform: scale(1.05);
-      }
-    }
-
-    &-name {
-      font-size: 1.75rem;
-      font-weight: 700;
-      color: $neutral-900;
-      letter-spacing: -0.02em;
-    }
-  }
-
-  .page-title {
-    font-size: 1.875rem;
-    font-weight: 700;
-    color: $neutral-900;
-    margin-bottom: $spacing-xs;
-    letter-spacing: -0.02em;
-    line-height: 1.2;
-
-    @media (max-width: 480px) {
-      font-size: 1.5rem;
-    }
-  }
-
-  .page-subtitle {
-    font-size: 0.9375rem;
-    color: $neutral-500;
-    font-weight: 400;
+  h2 {
+    margin-bottom: 22px;
+    color: #1d1d1f;
   }
 }
 
-// Form Styles
-.register-form {
-  display: flex;
-  flex-direction: column;
-  gap: $spacing-lg;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: $spacing-xs;
+/* ✨ INPUT GROUP */
+.input-group {
   position: relative;
+  margin-bottom: 20px;
 
-  .form-error {
-    font-size: 0.8125rem;
-    color: $error-red;
-    display: none;
-    margin-top: 4px;
-    font-weight: 500;
-  }
-}
-
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: $spacing-md;
-
-  @media (max-width: 640px) {
-    grid-template-columns: 1fr;
-  }
-}
-
-.form-label {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: $neutral-700;
-  letter-spacing: 0.01em;
-}
-
-.input-wrapper,
-.select-wrapper {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-
-.input-border {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 2px;
-  width: 0;
-  @include gradient-primary;
-  @include smooth-transition(width);
-  border-radius: 2px;
-}
-
-.form-input {
-  width: 100%;
-  padding: $spacing-sm $spacing-md;
-  font-size: 0.9375rem;
-  color: $neutral-900;
-  background: $neutral-50;
-  border: 1.5px solid $neutral-200;
-  border-radius: $border-radius-md;
-  outline: none;
-  font-family: inherit;
-  @include smooth-transition(all);
-
-  &::placeholder {
-    color: $neutral-400;
-  }
-
-  &:hover {
-    border-color: $neutral-300;
-    background: $white;
-  }
-
-  &:focus {
-    border-color: $primary-light;
-    background: $white;
-    box-shadow: $shadow-focus;
-
-    ~ .input-border {
-      width: 100%;
-    }
-  }
-
-  &:focus::placeholder {
-    opacity: 0.6;
-  }
-}
-
-.select-wrapper {
-  position: relative;
-}
-
-.form-select {
-  width: 100%;
-  padding: $spacing-sm $spacing-md;
-  padding-right: 40px;
-  font-size: 0.9375rem;
-  color: $neutral-900;
-  background: $neutral-50;
-  border: 1.5px solid $neutral-200;
-  border-radius: $border-radius-md;
-  outline: none;
-  font-family: inherit;
-  cursor: pointer;
-  appearance: none;
-  @include smooth-transition(all);
-
-  &:hover {
-    border-color: $neutral-300;
-    background: $white;
-  }
-
-  &:focus {
-    border-color: $primary-light;
-    background: $white;
-    box-shadow: $shadow-focus;
-
-    ~ .input-border {
-      width: 100%;
-    }
-  }
-
-  option {
-    padding: $spacing-sm;
-    background: $white;
-    color: $neutral-900;
-
-    &:disabled {
-      color: $neutral-400;
-    }
-  }
-}
-
-.select-arrow {
-  position: absolute;
-  right: $spacing-md;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-  color: $neutral-500;
-  @include smooth-transition(color, transform);
-
-  .form-select:focus ~ & {
-    color: $primary-light;
-    transform: translateY(-50%) rotate(180deg);
-  }
-}
-
-.form-divider {
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    $neutral-200 20%,
-    $neutral-200 80%,
-    transparent 100%
-  );
-  margin: $spacing-sm 0;
-}
-
-// Button Styles
-.btn-primary {
-  position: relative;
-  width: 100%;
-  padding: $spacing-md;
-  font-size: 1rem;
-  font-weight: 600;
-  color: $white;
-  @include gradient-primary;
-  border: none;
-  border-radius: $border-radius-md;
-  cursor: pointer;
-  overflow: hidden;
-  box-shadow: $shadow-md;
-  @include smooth-transition(transform, box-shadow);
-
-  .btn-text {
-    position: relative;
-    z-index: 2;
-  }
-
-  .btn-shimmer {
-    position: absolute;
-    top: 0;
-    left: -100%;
+  input,
+  select {
     width: 100%;
-    height: 100%;
-    @include gradient-shimmer;
-    z-index: 1;
-    @include smooth-transition(left);
-  }
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: $shadow-lg, $shadow-glow;
-
-    .btn-shimmer {
-      left: 100%;
-      transition: left 0.6s ease;
-    }
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-
-  &:focus {
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid #d2d2d7;
+    background: #fff;
+    font-size: 14px;
     outline: none;
-    box-shadow: $shadow-lg, 0 0 0 4px rgba(59, 130, 246, 0.2);
+    transition: 0.3s;
+  }
+
+  input:focus,
+  select:focus {
+    border-color: $accent;
+    box-shadow: 0 0 0 4px rgba(0,113,227,0.15);
+  }
+
+  input:focus + label,
+  input:not(:placeholder-shown) + label {
+    top: -8px;
+    font-size: 12px;
+    color: $accent;
+    background: #fff;
+    padding: 0 5px;
+  }
+
+  label {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    color: #86868b;
+    transition: 0.3s;
   }
 }
 
-// Footer
-.form-footer {
-  text-align: center;
-  font-size: 0.875rem;
-  color: $neutral-600;
-  margin-top: $spacing-sm;
+/* ✅ SELECT LABEL FIX */
+.select-label {
+  top: -8px !important;
+  font-size: 12px !important;
+  color: $accent !important;
+  background: #fff;
+  padding: 0 5px;
+}
 
-  .form-link {
-    color: $primary-light;
+/* 🔥 BUTTON */
+button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(135deg, #0071e3, #005ecb);
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.3s;
+
+  &:hover {
+    transform: scale(1.03);
+    box-shadow: 0 10px 30px rgba(0,113,227,0.4);
+  }
+}
+
+/* 🔗 LINK */
+.switch {
+  margin-top: 18px;
+  font-size: 14px;
+
+  a {
+    color: $accent;
     text-decoration: none;
-    font-weight: 600;
-    @include smooth-transition(color);
 
     &:hover {
-      color: $primary-dark;
       text-decoration: underline;
     }
-
-    &:focus {
-      outline: 2px solid $primary-light;
-      outline-offset: 2px;
-      border-radius: 2px;
-    }
   }
 }
 
-// Responsive Adjustments
-@media (max-width: 640px) {
-  .register-card {
-    border-radius: $border-radius-lg;
-  }
-
-  .register-header {
-    .brand-name {
-      font-size: 1.5rem;
-    }
-
-    .page-title {
-      font-size: 1.5rem;
-    }
-  }
-
-  .form-input,
-  .form-select {
-    font-size: 1rem;
-  }
-}
-
-// Animation for shimmer effect
-@keyframes shimmer {
-  0% {
-    left: -100%;
-  }
-  100% {
-    left: 100%;
-  }
-}
-
-// Print Styles
-@media print {
-  .background-decoration {
-    display: none;
-  }
-
-  .register-card {
-    box-shadow: none;
-    border: 1px solid $neutral-300;
-  }
-}
-
-// High Contrast Mode Support
-@media (prefers-contrast: high) {
-  .form-input,
-  .form-select {
-    border-width: 2px;
-  }
-
-  .btn-primary {
-    border: 2px solid $primary-dark;
-  }
-}
-
-// Reduced Motion Support
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
+/* 🎬 ENTRY */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
 }

@@ -1,0 +1,40 @@
+.page {
+  padding: 30px;
+  background: #ffffff;
+  min-height: 100vh;
+}
+
+.page-title {
+  font-size: 26px;
+  margin-bottom: 24px;
+}
+
+.table-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.08);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 14px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+th {
+  text-align: left;
+  color: #6b7280;
+}
+
+.small {
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: #0071e3;
+  color: white;
+  border: none;
+}

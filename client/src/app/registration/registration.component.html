@@ -1,142 +1,42 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <title>Register - Insurance Claims System</title>
-    <link rel="stylesheet" href="/register.scss" />
-  </head>
-  <body>
-    <div class="register-container">
-      <div class="register-card">
-        <div class="register-header">
-          <div class="brand">
-            <div class="brand-icon">
-              <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="40" height="40" rx="8" fill="url(#gradient)" />
-                <path d="M20 10L28 15V25L20 30L12 25V15L20 10Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M16 22L18.5 24.5L24 19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                <defs>
-                  <linearGradient id="gradient" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
-                    <stop stop-color="#1E40AF" />
-                    <stop offset="1" stop-color="#3B82F6" />
-                  </linearGradient>
-                </defs>
-              </svg>
-            </div>
-            <h1 class="brand-name">SecureClaim</h1>
-          </div>
-          <h2 class="page-title">Create Your Account</h2>
-          <p class="page-subtitle">Join our insurance claims processing platform</p>
-        </div>
+<div class="auth-wrapper">
+  <div class="auth-card fadeUp">
 
-        <form class="register-form" novalidate>
-          <div class="form-group">
-            <label for="username" class="form-label">Username</label>
-            <div class="input-wrapper">
-              <input
-                type="text"
-                id="username"
-                name="username"
-                class="form-input"
-                placeholder="Enter your username"
-                required
-              />
-              <span class="input-border"></span>
-            </div>
-            <span class="form-error" role="alert">Username is required</span>
-          </div>
+    <h2>Create Account</h2>
 
-          <div class="form-group">
-            <label for="email" class="form-label">Email Address</label>
-            <div class="input-wrapper">
-              <input
-                type="email"
-                id="email"
-                name="email"
-                class="form-input"
-                placeholder="you@company.com"
-                required
-              />
-              <span class="input-border"></span>
-            </div>
-            <span class="form-error" role="alert">Please enter a valid email address</span>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="password" class="form-label">Password</label>
-              <div class="input-wrapper">
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  class="form-input"
-                  placeholder="Minimum 8 characters"
-                  required
-                />
-                <span class="input-border"></span>
-              </div>
-              <span class="form-error" role="alert">Password must be at least 8 characters</span>
-            </div>
-
-            <div class="form-group">
-              <label for="confirm-password" class="form-label">Confirm Password</label>
-              <div class="input-wrapper">
-                <input
-                  type="password"
-                  id="confirm-password"
-                  name="confirm-password"
-                  class="form-input"
-                  placeholder="Re-enter password"
-                  required
-                />
-                <span class="input-border"></span>
-              </div>
-              <span class="form-error" role="alert">Passwords do not match</span>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="role" class="form-label">Role</label>
-            <div class="select-wrapper">
-              <select id="role" name="role" class="form-select" required>
-                <option value="" disabled selected>Select your role</option>
-                <option value="policyholder">Policyholder</option>
-                <option value="adjuster">Adjuster</option>
-                <option value="underwriter">Underwriter</option>
-                <option value="investigator">Investigator</option>
-              </select>
-              <span class="select-arrow">
-                <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-              <span class="input-border"></span>
-            </div>
-            <span class="form-error" role="alert">Please select a role</span>
-          </div>
-
-          <div class="form-divider"></div>
-
-          <button type="submit" class="btn-primary">
-            <span class="btn-text">Create Account</span>
-            <span class="btn-shimmer"></span>
-          </button>
-
-          <p class="form-footer">
-            Already have an account?
-            <a href="/login.html" class="form-link">Sign in</a>
-          </p>
-        </form>
+    <form>
+      <div class="input-group">
+        <input type="text" required placeholder=" " />
+        <label>Username</label>
       </div>
 
-      <div class="background-decoration">
-        <div class="decoration-circle decoration-circle-1"></div>
-        <div class="decoration-circle decoration-circle-2"></div>
-        <div class="decoration-grid"></div>
+      <div class="input-group">
+        <input type="email" required placeholder=" " />
+        <label>Email</label>
       </div>
-    </div>
-  </body>
-</html>
+
+      <div class="input-group">
+        <input type="password" required placeholder=" " />
+        <label>Password</label>
+      </div>
+
+      <div class="input-group">
+        <select required>
+          <option value="" disabled selected></option>
+          <option>Policyholder</option>
+          <option>Adjuster</option>
+          <option>Underwriter</option>
+          <option>Investigator</option>
+        </select>
+        <label class="select-label">Role</label>
+      </div>
+
+      <button type="submit">Create Account</button>
+    </form>
+
+    <p class="switch">
+      Already have an account?
+      <a routerLink="/login">Login →</a>
+    </p>
+
+  </div>
+</div>

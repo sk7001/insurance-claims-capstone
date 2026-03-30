@@ -2,27 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Premium Login</title>
+  <title>Login</title>
   <link rel="stylesheet" href="/home/coder/app/client/src/app/login/login.component.scss">
 </head>
 <body>
 
-<div class="container">
+<div class="bg-animation"></div>
 
-  <!-- Animated Intro Text -->
-  <div class="intro">
-    <h1 class="title">
-      <span>Secure</span>
-      <span>Your</span>
-      <span>Claims</span>
-      <span>Experience</span>
-    </h1>
-    <p class="subtitle">Smart Insurance Processing Platform</p>
-  </div>
+<div class="hero-text">
+  <h1><span>Secure</span> End‑to‑End Claims Management</h1>
+</div>
 
-  <!-- Login Card -->
-  <div class="login-card">
-    <h2>Welcome Back</h2>
+<div class="auth-wrapper">
+  <div class="auth-card fade-in">
+
+    <h3>Welcome Back</h3>
 
     <form>
       <div class="input-group">
@@ -35,11 +29,15 @@
         <label>Password</label>
       </div>
 
-      <button type="submit">Login</button>
+      <button>Sign In</button>
     </form>
 
-  </div>
+    <p class="switch">
+      Don’t have an account?
+      <a routerLink="/registration">Register →</a>
+    </p>
 
+  </div>
 </div>
 
 </body>
